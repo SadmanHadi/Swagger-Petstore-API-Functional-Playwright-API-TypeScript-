@@ -47,6 +47,7 @@ test.describe('Petstore API - Pet Operations', () => {
     const response = await petClient.getPetById(invalidId);
     expect(response.status()).toBe(404);
     const body = await response.json();
+    expect(body.type).toBe('error');
     expect(body.message).toBe('Pet not found');
   });
 

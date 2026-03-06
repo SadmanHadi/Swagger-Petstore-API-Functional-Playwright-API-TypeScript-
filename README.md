@@ -1,21 +1,22 @@
 # Swagger Petstore API Functional — Playwright API (TypeScript)
 
-Automated API testing suite for the Swagger Petstore API.
+Automated API testing suite for the [Swagger Petstore API](https://petstore.swagger.io/).
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js (v20+)
-- pnpm (`npm install -g pnpm`)
+- [Node.js](https://nodejs.org/) (v20+)
+- [pnpm](https://pnpm.io/) (`npm install -g pnpm`)
 
 ### Installation
 
-1. Install dependencies:
+1. Clone the repository.
+2. Install dependencies:
    ```bash
    pnpm install
    ```
-2. Initialize environment:
+3. Initialize environment:
    ```bash
    cp .env.example .env
    ```
@@ -53,16 +54,21 @@ Tests run automatically on every push via GitHub Actions.
 ## 📝 Test Coverage Notes
 
 - **Endpoints Covered**: `/pet`, `/user`.
-- **Key Validations**:
-  - Status code verification (200, 404, 400, etc.).
-  - Deep field validation (ID matching, Name consistency, Status updates).
-  - Error message parsing for negative cases.
-- **Cleanup Strategy**:
-  - Uses unique randomly generated IDs for Pet and User creation.
-  - Explicit `DELETE` calls at the end of happy path tests to ensure environment remains clean.
+- **Key Assertions**: Validates status codes, JSON schema fields (ID, name, status), and error messages.
+- **Cleanup Strategy**: Uses unique randomly generated IDs and explicit DELETE calls where applicable to ensure independence.
 
-## ⚠️ Known Assumptions & Limitations
+## 📝 Notes for Reviewer
 
-- The public Petstore API is used; occasional latency or data sync issues may occur.
-- Fixed boundary limits are based on standard Swagger Petstore behavior.
-- No authentication is required for the targeted endpoints in this suite.
+### Assumptions
+
+- The tests are designed to run against the public [petstore.swagger.io](https://petstore.swagger.io/v2/) instance.
+- No authentication (API Key) is required for the specific endpoints tested (`/pet` and `/user`).
+
+### Known Limitations
+
+- The public API may occasionally return 500 or 404 due to shared data state or rate-limiting.
+- Some boundary tests (like invalid ID types) are subject to the specific implementation of the Swagger Petstore's routing logic (returning 404/405/400).
+
+### Running in CI
+
+- The project is configured with GitHub Actions. It uses `BASE_URL` from repository secrets, with a fallback to the public URL for ease of review.
